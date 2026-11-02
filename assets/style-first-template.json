@@ -1,0 +1,127 @@
+{
+  "schema_version": "2.0",
+  "project_id": "example-style-first-deck",
+  "build_id": "draft-001",
+  "stage": "style_generate",
+  "workflow_branch": null,
+  "mode": null,
+  "brief": {
+    "topic": "示例：电影推荐",
+    "audience": "课堂同学",
+    "language": "zh-CN",
+    "aspect_ratio": "16:9",
+    "slide_count": 2,
+    "animation_requested": null,
+    "editable_requested": null,
+    "complexity": "ordinary"
+  },
+  "style_previews": {
+    "slide_id": "slide-02",
+    "shared_copy": "影片设定与主题看点",
+    "aspect_ratio": "16:9",
+    "images": [],
+    "displayed": false
+  },
+  "styleboards": [],
+  "selected_style_id": null,
+  "gates": {
+    "brief_ready": true,
+    "style_previews_generated": false,
+    "style_selected": false,
+    "branch_selected": false,
+    "outline_approved": false,
+    "artwork_approved": false,
+    "animation_downgrade_approved": false,
+    "b_previews_generated": false,
+    "b_variant_confirmed": false
+  },
+  "design_spec": {
+    "selected_style": null,
+    "fonts": [],
+    "palette": [],
+    "reference_locked": false
+  },
+  "b_previews": {
+    "slide_id": null,
+    "B1": null,
+    "B2": null,
+    "prompt_base": null,
+    "prompt_B1": null,
+    "prompt_B2": null
+  },
+  "b_generation_mode": null,
+  "slides": [
+    {
+      "id": "slide-01",
+      "headline": "封面",
+      "reference_image": null,
+      "qa": {
+        "static": "not_tested",
+        "edit": "not_tested",
+        "animation": "not_tested"
+      },
+      "variant_images": {
+        "B1": null,
+        "B2": null
+      },
+      "variant_prompts": {
+        "B1": null,
+        "B2": null
+      },
+      "variant_qa": {
+        "B1": "not_tested",
+        "B2": "not_tested"
+      }
+    },
+    {
+      "id": "slide-02",
+      "headline": "介绍设定",
+      "reference_image": null,
+      "qa": {
+        "static": "not_tested",
+        "edit": "not_tested",
+        "animation": "not_tested"
+      },
+      "variant_images": {
+        "B1": null,
+        "B2": null
+      },
+      "variant_prompts": {
+        "B1": null,
+        "B2": null
+      },
+      "variant_qa": {
+        "B1": "not_tested",
+        "B2": "not_tested"
+      }
+    }
+  ],
+  "artifacts": {
+    "pptx": null,
+    "pdf": null,
+    "preview_dir": null,
+    "overview_image": null,
+    "variant_deliveries": {
+      "B1": {
+        "images_dir": null,
+        "images_zip": null,
+        "pptx": null
+      },
+      "B2": {
+        "images_dir": null,
+        "images_zip": null,
+        "pptx": null
+      }
+    }
+  },
+  "checkpoint": {
+    "verified_files": [],
+    "last_saved_at": null,
+    "next_action": "生成同一正式内容页的八张风格真图，然后展示并等待用户选择，不提前A/B分流"
+  },
+  "notes": [
+    "新建项目只能用schema 2.0；stage=style_generate且branch=null。",
+    "八张图片必须真实生成并展示；JSON路径和displayed字段仅是状态声明，不证明真实出图。",
+    "选定风格进入route后再决定A/B；B1/B2只对所选风格的画质差异做二次确认。"
+  ]
+}

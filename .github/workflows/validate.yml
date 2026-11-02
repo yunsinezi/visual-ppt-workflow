@@ -16,4 +16,5 @@ jobs:
           python scripts/validate_skill.py .
           python scripts/validate_project.py assets/project-template.json
           python scripts/validate_project.py assets/image-branch-template.json
+          python scripts/validate_project.py assets/style-first-template.json
           python -m unittest discover -s tests -v

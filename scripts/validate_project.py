@@ -19,6 +19,8 @@ QA_VALUES = ('not_tested', 'pass', 'fail', 'not_applicable', 'blocked')
 
 
 def validate(project):
+    if project.get('schema_version') == '2.0':
+        return validate_style_first(project)
     errors = []
     for name in ('schema_version', 'project_id', 'workflow_branch', 'mode', 'stage', 'brief', 'gates', 'slides', 'artifacts'):
         if name not in project:
@@ -206,6 +208,141 @@ def validate(project):
                 errors.append(f'{name} qa.{dim} unknown: {value}')
         if stage in ('delivered', 'image_delivered') and any(x == 'fail' for x in slide.get('qa', {}).values()):
             errors.append(f'{name}: stage delivered but QA contains fail')
+    return errors
+
+
+
+def validate_style_first(project):
+    """Check v2.4 STYLE-FIRST project manifest declarations.
+
+    Paths and gate booleans cannot prove real images were generated or shown.
+    """
+    errors = []
+    required = ('project_id', 'build_id', 'brief', 'stage', 'workflow_branch',
+                'gates', 'style_previews', 'styleboards', 'selected_style_id',
+                'slides', 'artifacts', 'checkpoint')
+    for key in required:
+        if key not in project:
+            errors.append(f'missing field: {key}')
+    if errors:
+        return errors
+    stages = ('brief', 'style_generate', 'style_await_selection', 'route',
+              'pilot', 'artwork', 'approved', 'build', 'qa', 'delivered',
+              'b_preview', 'b_await_confirmation', 'image_generate',
+              'image_qa', 'image_delivered')
+    stage = project['stage']
+    if stage not in stages:
+        return ['invalid STYLE-FIRST stage']
+    gates = project['gates']
+    branch = project['workflow_branch']
+    previews = project['style_previews']
+    styleboards = project['styleboards']
+    brief = project['brief']
+    slides = project['slides']
+    if not isinstance(slides, list) or not slides:
+        errors.append('slides must be a nonempty list')
+    if not isinstance(previews, dict):
+        errors.append('style_previews must be an object')
+        previews = {}
+    if not isinstance(styleboards, list):
+        errors.append('styleboards must be a list')
+        styleboards = []
+    if not isinstance(gates, dict):
+        return errors + ['gates must be an object']
+    before_route = ('brief', 'style_generate', 'style_await_selection', 'route')
+    after_generate = ('style_await_selection', 'route')
+    expected_styles = [f'styleboards/style-{n:02d}.png' for n in range(1, 9)]
+    if stage in after_generate or stage not in before_route:
+        if styleboards != expected_styles:
+            errors.append('eight distinct ordered styleboard PNGs required')
+        if not all(previews.get(k) for k in ('slide_id', 'shared_copy', 'aspect_ratio')):
+            errors.append('style previews require one shared representative slide')
+        if previews.get('images') != expected_styles:
+            errors.append('style preview paths must match eight styleboards')
+        if gates.get('style_previews_generated') is not True:
+            errors.append('eight style images must be generated before route')
+        if previews.get('displayed') is not True:
+            errors.append('eight style previews must be displayed before route')
+    if stage in ('brief', 'style_generate', 'style_await_selection'):
+        if branch is not None or gates.get('branch_selected'):
+            errors.append('A/B branching prohibited until style has been chosen')
+        if gates.get('style_selected') or project.get('selected_style_id'):
+            errors.append('style must not be selected before user chooses from eight images')
+    elif stage == 'route':
+        if branch is not None or gates.get('branch_selected'):
+            errors.append('route cannot branch before selected style is recorded')
+    else:
+        if branch not in ('A', 'B') or gates.get('branch_selected') is not True:
+            errors.append('A/B branching requires user decision after style selection')
+    if stage == 'route' or stage not in before_route:
+        selected = project.get('selected_style_id')
+        if selected not in [f'style-{n:02d}' for n in range(1, 9)] or gates.get('style_selected') is not True:
+            errors.append('selected_style_id and gate required after eight previews')
+    if stage in ('pilot', 'artwork', 'approved', 'build', 'qa', 'delivered'):
+        if branch != 'A':
+            errors.append('A stage requires workflow_branch A')
+        if brief.get('animation_requested') is not True and brief.get('editable_requested') is not True:
+            errors.append('A requires animation OR editability')
+        if stage in ('approved','build','qa','delivered') and not gates.get('artwork_approved'):
+            errors.append('A requires full artwork approval before build')
+        if stage == 'delivered':
+            art = project['artifacts']
+            for key in ('pptx','pdf','preview_dir','overview_image'):
+                if not art.get(key):
+                    errors.append(f'A delivered requires {key}')
+            for slide in slides:
+                qa = slide.get('qa', {})
+                if qa.get('static') != 'pass' or qa.get('edit') != 'pass':
+                    errors.append('A delivery requires static/edit QA pass')
+                if brief.get('animation_requested') is True and qa.get('animation') != 'pass' and not gates.get('animation_downgrade_approved'):
+                    errors.append('A requested animation requires implementation or approved downgrade')
+    b_stages = ('b_preview', 'b_await_confirmation','image_generate','image_qa','image_delivered')
+    if stage in b_stages:
+        if branch != 'B':
+            errors.append('B stage requires workflow_branch B')
+        if brief.get('animation_requested') is not False or brief.get('editable_requested') is not False:
+            errors.append('B requires both animation_requested and editable_requested false')
+        if stage in b_stages[1:]:
+            pair = project.get('b_previews') or {}
+            if not all(pair.get(k) for k in ('slide_id','B1','B2','prompt_base')):
+                errors.append('B requires two same-style, same-page quality previews')
+            if pair.get('B1') and pair.get('B1') == pair.get('B2'):
+                errors.append('B1 and B2 preview images must be distinct')
+            base_prompt = pair.get('prompt_base')
+            if isinstance(base_prompt, str):
+                if pair.get('prompt_B1') != base_prompt or pair.get('prompt_B2') != base_prompt + '\n' + B2_QUALITY_CONSTRAINT:
+                    errors.append('B1/B2 quality prompts must share base and only differ by exact B2 suffix')
+            if not gates.get('b_previews_generated'):
+                errors.append('B preview pair required before variant confirmation')
+        chosen = project.get('b_generation_mode')
+        if stage in ('b_preview','b_await_confirmation'):
+            if chosen is not None or gates.get('b_variant_confirmed'):
+                errors.append('B cannot select variant before paired previews')
+        else:
+            if chosen not in ('B1','B2','both') or not gates.get('b_variant_confirmed'):
+                errors.append('B requires confirmation of B1, B2 or both')
+            if stage == 'image_delivered' and chosen in ('B1','B2','both'):
+                variants = ('B1','B2') if chosen == 'both' else (chosen,)
+                deliveries = (project['artifacts'].get('variant_deliveries') or {})
+                for variant in variants:
+                    delivery = deliveries.get(variant) or {}
+                    for key in ('images_dir','images_zip','pptx'):
+                        val = delivery.get(key)
+                        if not isinstance(val,str) or not val.startswith(variant+'/'):
+                            errors.append(f'B delivered requires {variant}/{key} path')
+                for slide in slides:
+                    base_prompt = slide.get('prompt_base')
+                    imgs = slide.get('variant_images') or {}
+                    prompts = slide.get('variant_prompts') or {}
+                    checks = slide.get('variant_qa') or {}
+                    for variant in variants:
+                        image = imgs.get(variant)
+                        if not isinstance(image,str) or not image.startswith(variant+'/') or not image.endswith('.png'):
+                            errors.append(f'B {variant} missing PNG page')
+                        if checks.get(variant) != 'pass':
+                            errors.append(f'B {variant} missing QA pass')
+                        if not isinstance(base_prompt,str) or prompts.get(variant) != base_prompt + ('\n'+B2_QUALITY_CONSTRAINT if variant == 'B2' else ''):
+                            errors.append(f'B {variant} prompt policy mismatch')
     return errors
 
 
