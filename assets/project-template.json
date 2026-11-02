@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.2",
+  "project_id": "example-deck",
+  "build_id": "draft-001",
+  "mode": "editable",
+  "stage": "brief",
+  "brief": {
+    "topic": "样例：低剧透电影推荐",
+    "audience": "课堂同学",
+    "language": "zh-CN",
+    "aspect_ratio": "16:9",
+    "slide_count": 2,
+    "animation_requested": true,
+    "target_app": "PowerPoint / WPS (未验证)",
+    "editable_requested": true,
+    "complexity": "ordinary"
+  },
+  "styleboards": [],
+  "selected_style_id": null,
+  "gates": {
+    "brief_ready": true,
+    "style_selected": false,
+    "artwork_approved": false,
+    "branch_selected": true,
+    "outline_approved": false,
+    "animation_downgrade_approved": false,
+    "unverified_critical_approved": false
+  },
+  "design_spec": {
+    "fonts": [],
+    "palette": [],
+    "reference_locked": false
+  },
+  "slides": [
+    {
+      "id": "slide-01",
+      "intent": "引入主题",
+      "headline": "电影推荐",
+      "reference_image": null,
+      "rendered_image": null,
+      "status": "planned",
+      "elements": [
+        {
+          "id": "title",
+          "kind": "native_text",
+          "source": null,
+          "bbox": [
+            0.8,
+            0.8,
+            7.5,
+            1.3
+          ],
+          "editable": true,
+          "layer": 10,
+          "animation": {
+            "status": "planned",
+            "effect": "fade-in",
+            "duration_s": 0.5,
+            "trigger": "on-click"
+          }
+        }
+      ],
+      "qa": {
+        "static": "not_tested",
+        "edit": "not_tested",
+        "animation": "not_tested",
+        "target_playback": "not_tested"
+      }
+    },
+    {
+      "id": "slide-02",
+      "intent": "介绍设定",
+      "headline": "关于相遇与距离",
+      "reference_image": null,
+      "rendered_image": null,
+      "status": "planned",
+      "elements": [
+        {
+          "id": "body",
+          "kind": "native_text",
+          "source": null,
+          "bbox": [
+            1,
+            1,
+            9,
+            2
+          ],
+          "editable": true,
+          "layer": 10,
+          "animation": null
+        }
+      ],
+      "qa": {
+        "static": "not_tested",
+        "edit": "not_tested",
+        "animation": "not_tested",
+        "target_playback": "not_tested"
+      }
+    }
+  ],
+  "artifacts": {
+    "pptx": null,
+    "pdf": null,
+    "preview_dir": null,
+    "qa_report": null,
+    "overview_image": null,
+    "source_package": null
+  },
+  "checkpoint": {
+    "last_saved_at": null,
+    "verified_files": [],
+    "next_action": "制作至少8套实际可见风格样板",
+    "last_batch_id": null,
+    "last_verified_build_id": null
+  },
+  "notes": [
+    "此文件仅是工程状态结构示例，不表示已经生成或用户确认任何图片",
+    "示例已选 A；真正新建任务必须先问 A/B。B 项目使用 image-branch-template.json。",
+    "v2.3: A 适用于动画 OR 编辑性；无动画但需要逐元素编辑仍使用A。交付阶段须真实存在PPTX、PDF、逐页预览和总览图。"
+  ],
+  "workflow_branch": "A"
+}
