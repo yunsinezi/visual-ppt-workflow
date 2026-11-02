@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.4.0] - 2026-11-02
+
+- Migrated the full-edition source into independent repository `yunsinezi/visual-ppt-workflow`, separate from the fast-edition repository.
+- **STYLE-FIRST** now precedes A/B on every new project: eight independently generated previews of the **same representative slide**, user selects one style, then A/B is chosen. No branch generation or early route before style approval.
+- A reuses selected style without repeating eight previews; continues the original PILOT, full artwork approval, high-fidelity editable rebuild, optional real animation, QA and deliverables.
+- B preserves the existing paired B1/B2 quality policy **within the selected style**; does not conflate B1/B2 with eight visual-style previews.
+- Added new `schema_version=2.0` style-first manifest and validator tests, preserving v2.3 and earlier project validation for resumability.
+- Rewrote entry README and installation notes to match new source/repository location, and clarified static verification limitations.
+
+
+
 ## [2.3.0] - 2026-11-02
 
 - Integrated 29 approved audit decisions into the normative workflow and new [policy matrix](references/upgrade-policy-v2.3.md).

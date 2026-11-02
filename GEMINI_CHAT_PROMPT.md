@@ -1,5 +1,7 @@
-# 发送给支持 Agent Skills 的 Gemini / Codex（复制整段）
+# Gemini CLI / Antigravity / Codex 完整版安装指令
 
-请安装或读取 https://github.com/yunxinzi/visual-ppt-workflow 的 **v2.3.0** Skill，入口是根目录 SKILL.md，优先按其 29 项已确认决策执行，不得使用旧版 A/B 路由规则。Gemini CLI 可执行 `gemini skills install https://github.com/yunxinzi/visual-ppt-workflow.git`，如涉及额外安装和权限先征得我的批准；Gemini 网页版必须以 ZIP 导入 Skills，粘贴链接不等于安装。
+请安装完整 PPT Agent Skill `visual-ppt-workflow` v2.4，地址 https://github.com/yunsinezi/visual-ppt-workflow ，入口 SKILL.md。先确认生图、PPTX、PDF 和文件保存等必要工具实际可用，不得虚构能力。Gemini CLI 可用 `gemini skills install https://github.com/yunsinezi/visual-ppt-workflow.git`；网页版若支持 Skill ZIP 导入则以根目录 SKILL.md 的完整 ZIP 安装，粘贴链接不等于安装。
 
-完成加载后先核实本环境实际可用的生图、PPTX、PDF、文字、文件保存及动画播放工具，如缺失不要冒充具备。每次新建 PPT，若尚未明确要求，请只问我一个组合问题：“本次 PPT 是否需要动画效果，或需要后期编辑文字、图形等元素？”需要任一项走 A，无需两项才走 B。A 需 8 套不同风格预览、完整图稿审批、尽量保真且真正可编辑的 PPTX；如要求动画，必须实装或获得我的降级批准。B 先生成同一页 B1/B2 两张真实对照预览，反复修改两张直至满意，随后由我明确选择仅 B1/仅 B2/同时 both，才能批量。B 默认交付每套 PNG＋ZIP＋纯图片 PPTX，不做分层。按批准的分支执行自适应批次、真实 QA、断点回读和版本一致性，不能假称文件/播放已经验证。
+**最重要且不可颠倒：** 新建 PPT 先根据材料生成并展示**八张同一张代表性内容页的八种不同风格完整预览图**，请我选择一张。此阶段不能先 A/B 分流、不能只列文字、不能只用一张图换色。选定风格后才询问我需要 A（动画或逐元素编辑）还是 B（静态纯图片）；如果我已经说了需求就复用但也不能跳过八图。A 不再重复做八图，保留完整版的全稿审核、编辑/动画实装和严格 QA；B 在同一个已选风格下做 B1/B2 画质双预览，获确认后按选定版本生成整套并交付高清 PNG+ZIP+纯图片 PPTX。
+
+保持断点恢复、文件真正可访问、诚实报告实播/可编辑/渲染验证状态；不要擅自降标或代替用户确认。

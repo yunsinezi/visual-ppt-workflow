@@ -1,3 +1,5 @@
+> V2.4：安装后的正确新建顺序为**真实八张同页风格图 → 用户选风格 → A/B 分流**；B1/B2 在选中风格后才出现。请勿照搬早期先 A/B 的示例。
+
 # Gemini / Antigravity 安装：Visual PPT Workflow
 
 本仓库提供 Agent Skills 工作流，主入口 [SKILL.md](SKILL.md)。它要求宿主有必要的图像生成、PPTX 构建、渲染等工具；**不能把阅读 GitHub 文件当成已安装**。
@@ -5,7 +7,7 @@
 ## Gemini CLI：直接从公开 GitHub 安装
 
 ```bash
-gemini skills install https://github.com/yunxinzi/visual-ppt-workflow.git
+gemini skills install https://github.com/yunsinezi/visual-ppt-workflow.git
 ```
 
 启动 Gemini CLI 后用 `/skills list` 查找 `visual-ppt-workflow`，必要时执行 `/skills reload`。安装与激活需经过用户权限确认。
