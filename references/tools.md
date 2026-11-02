@@ -1,3 +1,5 @@
+> **V2.4：** 新项目用 `assets/style-first-template.json`（schema 2.0），运行 `python scripts/validate_project.py assets/style-first-template.json`；旧版 A/B 示例仅用于历史兼容回归。脚本只验证状态声明的一致性，不能验证八张图片真的被生成、展示、批准或 PPT 动画真实播放。
+
 # 附带脚本与边界
 
 脚本均使用 Python 3.10+，除图像对比脚本外只依赖标准库。

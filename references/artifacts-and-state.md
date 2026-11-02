@@ -1,3 +1,5 @@
+> **V2.4 新建工程优先规则：** 所有新建 PPT 使用 `assets/style-first-template.json`（schema 2.0），先共同生成并展示八张风格图、用户选风格，才在 `route` 处写入 `workflow_branch=A/B`。下文旧模板、仅 B 的目录表是 v2.3 或更早项目的兼容说明，不能用来绕过共同八图 Gate。
+
 # 文件与状态约定
 
 **分支说明：** 下方含 styleboards/reference/backgrounds/foregrounds 的目录结构仅对 A 适用。B 需要 `project.json`、双预览 `previews/B1.png`、`previews/B2.png`、用户确认状态，以及按选择生成的 `B1/slide-XX.png` 与/或 `B2/slide-XX.png`；双方选择 both 则有两套独立全页图片，不强制建立 A 的目录。见 [B 分支](image-fast-path.md)。
